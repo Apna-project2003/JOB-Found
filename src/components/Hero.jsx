@@ -23,7 +23,7 @@ setsearchFilter({
 
  setissearched(true)
 
-});
+
      }
   return (
     <div className="container 2xl: px-20 mx-auto my-10">
