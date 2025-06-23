@@ -14,12 +14,23 @@ export const AppContextProvider =(props) =>{
 
     const [isSearched , setissearched] = useState(false);
 
+    const [jobs,setJobs] =useState([])
+
     
+   // Function to fetch jobs
+
+   const fetchJobs = async () =>{
+ setJobs(jobsData)
+   }
+
+   useEffect(() =>{
+    fetchJobs()
+   },[])
 
 
     const value = {
 setsearchFilter,searchFilter,
-isSearched,setissearched,
+isSearched,setissearched,jobs,setJobs
 
     }
     return (<AppContext.Provider value ={value}>

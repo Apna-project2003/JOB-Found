@@ -1,9 +1,10 @@
 import React, { useContext } from "react";
 import { AppContext } from "../context/AppContext";
 import Cross from "../assets/icons8-cross-50.png";
-import { JobCategories, JobLocations } from "../assets/assets.js";
+import { JobCategories, JobLocations, jobsData } from "../assets/assets.js";
+import JobCard from "./JobCard.jsx";
 const JobListing = () => {
-  const { isSearched, searchFilter, setsearchFilter } = useContext(AppContext);
+  const { isSearched, searchFilter, setsearchFilter,jobs } = useContext(AppContext);
   return (
     <div className="container 2xl:px-20 mx-auto flex flex-col lg:flex-row max-lg:space-y-8 py-8">
       {/* Sidebar */}
@@ -82,6 +83,9 @@ const JobListing = () => {
          <p className="mb-8">Get your desired job from top companies</p>
          <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
 
+{jobsData.map((job,index)=>(
+    <JobCard  key={index} job ={job} />
+))}
          </div>
       </section>
     </div>
