@@ -19,7 +19,7 @@ const{user} = useUser();
 <p className="text-gray-600 text-sm max-w-xs">
         Welcome back! Aryan.
       </p>
-<p>Hi , {user.firstName + " " +user.lastName}</p>
+<p className='max-sm:hidden'>Hi , {user.firstName + " " +user.lastName}</p>
 <UserButton/>
 </div>
         :
