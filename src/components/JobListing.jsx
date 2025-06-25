@@ -28,16 +28,55 @@ setSelectedLocations(
 )
   }
 
-  useEffect(()=>{
-    const matchesCategory = jobsData => selectedCategories.length ===0 || selectedCategories.includes(jobsData.Category)
+//   useEffect(()=>{
+//     const matchesCategory = jobsData => selectedCategories.length ===0 || selectedCategories.includes(jobsData.Category)
 
-      const matchesLocations = jobsData => selectedLocations.length ===0 || selectedLocations.includes(jobsData.Location)
+//       const matchesLocations = jobsData => selectedLocations.length ===0 || selectedLocations.includes(jobsData.Location)
 
-      const matchesTitle = jobsData => searchFilter.title ==="" || jobsData.toLowerCase().includes(searchFilter.title.toLowerCase())
+//       const matchesTitle = jobsData => searchFilter.title ==="" || jobsData.toLowerCase().includes(searchFilter.title.toLowerCase())
+//       const matchesSearchLocation = jobsData => searchFilter.Location ===""||  jobsData.Location.toLowerCase().includes(searchFilter.Location.toLowerCase())
+
+//  const newFilteredJobs = jobsData.slice().reverse().filter(
+//   jobsData => matchesCategory(jobsData) && matchesLocations(jobsData) && matchesTitle(jobsData) && matchesSearchLocation(jobsData)
+//  )
+//       setFilteredJobs(newFilteredJobs)
+//       setCurrentPage(1)
+
+//   },[jobsData,selectedCategories ,selectedLocations , searchFilter])
 
 
-      co
-  },[])
+
+
+useEffect(() => {
+  const matchesCategory = job =>
+    selectedCategories.length === 0 || selectedCategories.includes(job.category)
+
+  const matchesLocation = job =>
+    selectedLocations.length === 0 || selectedLocations.includes(job.location)
+
+  const matchesTitle = job =>
+    searchFilter.title === "" ||
+    job.title.toLowerCase().includes(searchFilter.title.toLowerCase())
+
+  const matchesSearchLocation = job =>
+    searchFilter.location === "" ||
+    job.Location.toLowerCase().includes(searchFilter.location.toLowerCase())
+
+  const newFilteredJobs = jobsData
+    .slice()
+    .reverse()
+    .filter(
+      job =>
+        matchesCategory(job) &&
+        matchesLocation(job) &&
+        matchesTitle(job) &&
+        matchesSearchLocation(job)
+    )
+
+  setFilteredJobs(newFilteredJobs);
+  setCurrentPage(1);
+}, [jobs, selectedCategories, selectedLocations, searchFilter]);
+
   return (
     <div className="container 2xl:px-20 mx-auto flex flex-col lg:flex-row max-lg:space-y-8 py-8">
       {/* Sidebar */}
@@ -127,7 +166,7 @@ setSelectedLocations(
         </h3>
         <p className="mb-8">Get your desired job from top companies</p>
         <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-4">
-          {jobsData
+          {filteredJobs
             .slice((currentPage - 1) * 6, currentPage * 6)
             .map((job, index) => (
               <JobCard key={index} job={job} />
@@ -136,7 +175,7 @@ setSelectedLocations(
 
         {/* Pagination */}
 
-        {jobsData.length > 0 && (
+        {filteredJobs.length > 0 && (
           <div className="flex items-center justify-center space-x-2 mt-10">
             <a href="#job-list">
               <img
@@ -145,7 +184,7 @@ setSelectedLocations(
                 alt=""
               />
             </a>
-            {Array.from({ length: Math.ceil(jobsData.length / 6) }).map(
+            {Array.from({ length: Math.ceil(filteredJobs.length / 6) }).map(
               (_, index) => (
                 <a href="#job-list">
                   <button
@@ -166,7 +205,7 @@ setSelectedLocations(
               <img
                 onClick={() =>
                   setCurrentPage(
-                    Math.min(currentPage + 1, Math.ceil(jobsData.length / 6))
+                    Math.min(currentPage + 1, Math.ceil(filteredJobs.length / 6))
                   )
                 }
                 src={RightArrow}
