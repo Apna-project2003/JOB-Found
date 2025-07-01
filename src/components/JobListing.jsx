@@ -22,28 +22,11 @@ setSelectedCategories(
 )
   }
 
-   const handleLocationsChange = (Location) =>{
+   const handleLocationsChange = (location) =>{
 setSelectedLocations(
-  prev=>prev.includes(Location) ? prev.filter(c=>c!== Location) :[...prev,Location]
+  prev=>prev.includes(location) ? prev.filter(c=>c!== location) :[...prev,location]
 )
   }
-
-//   useEffect(()=>{
-//     const matchesCategory = jobsData => selectedCategories.length ===0 || selectedCategories.includes(jobsData.Category)
-
-//       const matchesLocations = jobsData => selectedLocations.length ===0 || selectedLocations.includes(jobsData.Location)
-
-//       const matchesTitle = jobsData => searchFilter.title ==="" || jobsData.toLowerCase().includes(searchFilter.title.toLowerCase())
-//       const matchesSearchLocation = jobsData => searchFilter.Location ===""||  jobsData.Location.toLowerCase().includes(searchFilter.Location.toLowerCase())
-
-//  const newFilteredJobs = jobsData.slice().reverse().filter(
-//   jobsData => matchesCategory(jobsData) && matchesLocations(jobsData) && matchesTitle(jobsData) && matchesSearchLocation(jobsData)
-//  )
-//       setFilteredJobs(newFilteredJobs)
-//       setCurrentPage(1)
-
-//   },[jobsData,selectedCategories ,selectedLocations , searchFilter])
-
 
 
 
@@ -60,7 +43,7 @@ useEffect(() => {
 
   const matchesSearchLocation = job =>
     searchFilter.location === "" ||
-    job.Location.toLowerCase().includes(searchFilter.location.toLowerCase())
+    job.location.toLowerCase().includes(searchFilter.location.toLowerCase())
 
   const newFilteredJobs = jobsData
     .slice()
