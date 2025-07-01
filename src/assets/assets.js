@@ -1,3 +1,5 @@
+import company_icon from '../assets/employee-engagement.png'
+
 export const JobCategories = [
   "Software Development",
   "Design",
@@ -242,4 +244,56 @@ export const jobsData = [
       </ul>
     `
   }
+];
+
+
+export const jobsApplied = [
+  {
+    company: 'Facebook',
+    title: 'Frontend Developer',
+    location: 'Hyderabad',
+    date: '15 Jul, 2024',
+    status: 'Pending',
+    logo: company_icon,
+  },
+  {
+    company: 'Amazon',
+    title: 'Full Stack Developer',
+    location: 'Bangalore',
+    date: '22 Aug, 2024',
+    status: 'Pending',
+    logo: company_icon,
+  },
+  {
+    company: 'Adobe',
+    title: 'UI/UX Designer',
+    location: 'Noida',
+    date: '30 Jun, 2024',
+    status: 'Interview Scheduled',
+    logo: company_icon,
+  },
+  {
+    company: 'Google',
+    title: 'Software Engineer',
+    location: 'Pune',
+    date: '10 Jul, 2024',
+    status: 'Shortlisted',
+    logo: company_icon,
+  },
+  {
+    company: 'Microsoft',
+    title: 'Backend Developer',
+    location: 'Hyderabad',
+    date: '05 Jul, 2024',
+    status: 'Pending',
+    logo: company_icon,
+  },
+  {
+    company: 'Meta',
+    title: 'React Developer',
+    location: 'Gurgaon',
+    date: '25 Jun, 2024',
+    status: 'Rejected',
+    logo: company_icon,
+  },
 ];
