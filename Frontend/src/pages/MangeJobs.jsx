@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { jobsApplied } from '../assets/assets'
+import { jobsApplied, jobsData } from '../assets/assets'
 import moment from 'moment';
 import { useNavigate } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
@@ -9,9 +9,12 @@ const MangeJobs = () => {
 
   const navigate = useNavigate()
 
-  const [jobs,setJobs] = useState(false)
+  const [jobs,setJobs] = useState([])
 
   const {backendUrl , companyToken} = useContext(AppContext)
+
+
+ 
 
   // Function to Fetch company Job  Applications data
 
@@ -44,6 +47,73 @@ fetchCompanyJobs()
 }
 
 },[companyToken])
+
+
+
+// const changeJobVisibility = async (id) => {
+//   try {
+//     const { data } = await axios.post(
+//    backendUrl+'/api/company/change-visibility',
+//       { id },
+//       { headers: { token: companyToken } }
+//     );
+
+//     if (data.success) {
+//       // 👇 Replace the updated job in jobs state
+//       // setJobs((prevJobs) =>
+//       //   prevJobs.map((job) =>
+//       //     job._id === data.job._id ? data.job : job
+
+//       toast.success(data.message)
+//       fetchCompanyJobs()
+//       //   )
+//       // );
+
+//       // toast.success("Visibility changed!");
+//     } else {
+//       toast.error(data.message);
+//     }
+//   } catch (error) {
+//     toast.error(error.message);
+//   }
+// };
+
+
+
+
+
+
+
+const toggleVisibility = async (jobId) => {
+  try {
+    const { data } = await axios.post(
+      `${backendUrl}/api/company/change-visibility`,
+      { id: jobId },
+      { headers: { token: companyToken } }
+    );
+
+    if (data.success) {
+      // 👇 Replace the updated job in jobs state
+      setJobs((prevJobs) =>
+        prevJobs.map((job) =>
+          job._id === data.job._id ? data.job : job
+        )
+      );
+
+      toast.success("Visibility changed!");
+    } else {
+      toast.error(data.message);
+    }
+  } catch (error) {
+    toast.error(error.message);
+  }
+};
+
+
+
+
+
+
   let count =1;
   return (
     <div className='container p-4 max-w-5xl'>
@@ -60,7 +130,7 @@ fetchCompanyJobs()
             </tr>
           </thead>
           <tbody>
-            {jobsApplied.map((job,index) =>(
+            {jobs.map((job,index) =>(
 
 <tr key = {index} className='text-gray-700'>
 <td className='py-2 px-4 border-b max-sm:hidden'>{count++}</td>
@@ -68,7 +138,22 @@ fetchCompanyJobs()
 <td  className='py-2 px-4 border-b max-sm:hidden'>{moment(job.date).format('ll')}</td>
 <td  className='py-2 px-4 border-b max-sm:hidden'>{job.location}</td>
 <td  className='py-2 px-4 border-b text-center'>{job.applicants}</td>
-<input className='scale-125 ml-4' type="checkbox" />
+<td className='py-2 px-4 border-b'>
+ 
+
+
+  <input
+    className='scale-125 ml-4 cursor-pointer'
+    type="checkbox"
+    checked={job.visible}
+   
+    onChange={() => toggleVisibility(job._id)}
+  />
+
+
+
+
+</td>
 
 </tr>
             ))}

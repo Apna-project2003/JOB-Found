@@ -9,6 +9,7 @@ export const AppContext = createContext()
 
 export const AppContextProvider =(props) =>{
  const backendUrl = import.meta.env.VITE_BACKEND_URL
+ 
     const [searchFilter , setsearchFilter] = useState({
         title:'',
         location:''
@@ -23,9 +24,31 @@ export const AppContextProvider =(props) =>{
     
     const [companyToken , setCompanyToken] = useState(null)
     const [companyData , setCompanyData] = useState(null)
+
+    const [userData ,setUserData] = useState(null)
+
+    const [userApplication , setUserApplication] = useState([])
    // Function to fetch jobs
 
    const fetchJobs = async () =>{
+
+    try {
+
+
+        const {data} = await axios.get(backendUrl+'/api/jobs')
+
+
+        if(data.sucess) {
+            setJobs(data.jobs)
+            console.log(data.jobs);
+        }
+else{
+    toast.error(data.message)
+}
+
+    }  catch(error) {
+toast.error(error.message)
+    }
  setJobs(jobsData)
    }
    // Function to Fetch  company  data
