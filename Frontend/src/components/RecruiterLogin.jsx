@@ -1,14 +1,18 @@
-
-
 import React, { useContext, useEffect, useState } from "react";
 import PersonIcon from "../assets/avatar.png";
 import EmailIcon from "../assets/email-file.png";
 import Password from "../assets/password.png";
 
-import Cross from "../assets/icons8-cross-50.png";import { AppContext } from "../context/AppContext";
+import Cross from "../assets/icons8-cross-50.png";
+import { AppContext } from "../context/AppContext";
 import Uploadareaicon from "../assets/icons8-upload-to-the-cloud-48.png";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const RecruiterLogin = () => {
+  const navigate = useNavigate();
   const [state, setState] = useState("Login");
   const [name, setName] = useState("");
   const [password, setPassword] = useState("");
@@ -16,24 +20,69 @@ const RecruiterLogin = () => {
   const [image, setImage] = useState(false);
   const [isTextDataSubmited, setIsTextDataSubmited] = useState(false);
 
-  const{setshowRecruiterLogin} = useContext(AppContext)
+  const { setshowRecruiterLogin, backendUrl, setCompanyToken, setCompanyData } =
+    useContext(AppContext);
   const onSubmitHandler = async (e) => {
     e.preventDefault();
 
     if (state == "Sign Up" && !isTextDataSubmited) {
-      setIsTextDataSubmited(true);
+    return   setIsTextDataSubmited(true);
+    }
+
+    try {
+      if (state === "Login") {
+        const { data } = await axios.post(backendUrl + "/api/company/login", {
+          email,
+          password,
+        });
+
+        if (data.success) {
+        
+          setCompanyData(data.company);
+          setCompanyToken(data.token);
+          localStorage.setItem("companyToken", data.token);
+          setshowRecruiterLogin(false);
+          navigate("/dashboard");
+        } else {
+          toast.error(data.message);
+        }
+        
+      }
+      
+      else{
+
+
+        const formData = new FormData()
+        formData.append('name',name)
+         formData.append('password',password)
+          formData.append('email',email)
+           formData.append('image',image)
+            const {data} = await axios.post(backendUrl+ '/api/company/register',formData)
+
+            if(data.success){
+             
+          setCompanyData(data.company);
+          setCompanyToken(data.token);
+          localStorage.setItem("companyToken", data.token);
+          setshowRecruiterLogin(false);
+          navigate("/dashboard");
+            }
+            else{
+              toast.error(data.message)
+            }
+        }
+    } catch (error) {
+       toast.error(error.message)
     }
   };
 
+  useEffect(() => {
+    document.body.style.overflow = "hidden";
 
-  useEffect(()=>{
-document.body.style.overflow = 'hidden'
-
-return () =>{
-
-    document.body.style.overflow = 'unset'
-}
-  },[])
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, []);
   return (
     <div className="absolute top-0 left-0 right-0 bottom-0 z-10 backdrop:blur-sm bg-black/30 flex justify-center items-center">
       <form
@@ -108,10 +157,11 @@ return () =>{
             </div>
           </>
         )}
-{state === "Login" &&  <p className="text-sm text-blue-600 mt-4 cursor-pointer">
-          Forgot password ?
-        </p>}
-       
+        {state === "Login" && (
+          <p className="text-sm text-blue-600 mt-4 cursor-pointer">
+            Forgot password ?
+          </p>
+        )}
 
         <button
           type="submit"
@@ -139,14 +189,17 @@ return () =>{
             </span>
           </p>
         )}
-        <img onClick={e => setshowRecruiterLogin(false)} className="absolute top-5 right-5 cursor-pointer" src={Cross} alt="" />
-       
+        <img
+          onClick={(e) => setshowRecruiterLogin(false)}
+          className="absolute top-5 right-5 cursor-pointer"
+          src={Cross}
+          alt=""
+        />
       </form>
     </div>
   );
 };
 
 export default RecruiterLogin;
-
 
 // 3.51

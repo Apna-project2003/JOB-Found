@@ -7,10 +7,12 @@ import Logo from '../assets/logo .png'
 import AddIcon from '../assets/icons8-add-48.png'
 import homeIcon from '../assets/icons8-home-24.png'
 import TickTack from '../assets/icons8-tick-tick-48.png'
+import { useContext } from 'react';
+import { AppContext } from '../context/AppContext';
 
 const Dashboard = () => {
   const navigate = useNavigate()
-
+const {companyData} = useContext(AppContext)
   return (
     <div className='min-h-screen'>
 
@@ -18,10 +20,18 @@ const Dashboard = () => {
       <div className='shadow py-4'>
         <div className='px-5 flex justify-between items-center'>
           <img onClick={() => navigate('/')} src={JobLogo} className="w-16 h-auto object-contain cursor-pointer" />
-          <div className='flex items-center gap-3'>
-            <p className='max-sm:hidden'>Welcome, My Job</p>
+
+          
+{companyData && (
+  
+   <div className='flex items-center gap-3'>
+
+
+
+
+            <p className='max-sm:hidden'>Welcome, {companyData.name}</p>
             <div className='relative group'>
-              <img src={Logo} alt="" className="w-110 h-12" />
+              <img src={companyData.image} alt="" className="w-110 h-12" />
               <div className='absolute hidden group-hover:block top-0 right-0 z-10 text-black rounded pt-12'>
                 <ul className='list-none m-0 p-2 bg-white rounded-md border text-sm'>
                   <li className='py-1 px-2 cursor-pointer pr-10'>Logout</li>
@@ -29,6 +39,9 @@ const Dashboard = () => {
               </div>
             </div>
           </div>
+)}
+
+         
         </div>
       </div>
 
