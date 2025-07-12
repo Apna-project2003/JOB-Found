@@ -32,7 +32,7 @@
 //  });
 
 // app.post('/webhooks',clerkWebhooks)
-// // app.use('/api/company' , companyRoutes)
+// 
 // // app.use('/api/jobs',jobRoutes)
 // // app.use('/api/users',userRoutes)
 
@@ -88,7 +88,7 @@ import 'dotenv/config'
 import connectDB from './config/db.js'
 import * as Sentry from "@sentry/node";
 import { clerkWebhooks } from './controllers/webhooks.js';
-
+ import companyRoutes from './routes/companyRoutes.js'
 console.log("✅ Index.js started");
 
 const app = express()
@@ -115,6 +115,8 @@ app.post('/webhooks', (req, res, next) => {
   console.log("✅ POST /webhooks called");
   clerkWebhooks(req, res, next);
 })
+
+ app.use('/api/company' , companyRoutes)
 
 // Sentry error handler: yeh sabke baad
 Sentry.setupExpressErrorHandler(app);
