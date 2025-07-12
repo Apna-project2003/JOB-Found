@@ -12,12 +12,16 @@ import SalaryIcon from "../assets/salary.png";
 import kconvert from "k-convert";
 import moment from "moment";
 import JobCard from "../components/JobCard";
+import { toast } from "react-toastify";
+import axios from "axios";
 const ApplyJob = () => {
   const { id } = useParams();
 
   const [jobdata, setjobdata] = useState(null);
 
-  const { jobs , backendUrl} = useContext(AppContext);
+  const { jobs , backendUrl,userData,userApplications} = useContext(AppContext)
+
+
   const fetchJob = async () => {
     
 
@@ -43,6 +47,23 @@ const ApplyJob = () => {
     }
     
   };
+
+  const applyHandler = async () => {
+    try {
+
+      if(!userData) {
+        return toast.error("Login to apply for jobs")
+      }
+
+
+      if(!userData.resume) {
+        return  toast.error ('Upload resume to apply') 
+
+      }
+    }catch(error) {
+       return toast.error(error.message)
+    }
+  }
 
   useEffect(() => {
    
@@ -87,7 +108,7 @@ const ApplyJob = () => {
             </div>
 
             <div className=" flex flex-col justify-center text-end text-sm max-md:mx-auto max-md:text-center">
-              <button className="bg-blue-600 p-2.5 px-10 text-white  rounded">Apply Now</button>
+              <button onClick={applyHandler} className="bg-blue-600 p-2.5 px-10 text-white  rounded">Apply Now</button>
               <p className="mt-1 text-gray-600">Posted {moment(jobdata.data).fromNow()}</p>
             </div>
           </div>
@@ -96,7 +117,7 @@ const ApplyJob = () => {
               <h2 className="font-bold text-2xl mb-4">Job Description</h2>
 
               <div className="rich-text" dangerouslySetInnerHTML={{__html:jobdata. description}}></div>
-             <button className="bg-blue-600 p-2.5 px-10 text-white  rounded mt-10">Apply Now</button>
+             <button onClick={applyHandler} className="bg-blue-600 p-2.5 px-10 text-white  rounded mt-10">Apply Now</button>
             </div>
 
             {/* Right section more Jobs */}
