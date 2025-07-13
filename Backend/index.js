@@ -88,7 +88,10 @@ import 'dotenv/config'
 import connectDB from './config/db.js'
 import * as Sentry from "@sentry/node";
 import { clerkWebhooks } from './controllers/webhooks.js';
- import companyRoutes from './routes/companyRoutes.js'
+ import companyRoutes from './routes/companyRoutes.js';
+ import connectCloudinary from './config/cloudinary.js';
+ import jobRoutes from './routes/jobRoutes.js'
+
 console.log("✅ Index.js started");
 
 const app = express()
@@ -96,6 +99,8 @@ const app = express()
 console.log("✅ Before connecting DB");
 await connectDB()
 console.log("✅ DB connected");
+await connectCloudinary()
+console.log("cloudinary working");
 
 app.use(cors())
 console.log("✅ CORS enabled");
@@ -118,6 +123,7 @@ app.post('/webhooks', (req, res, next) => {
 
  app.use('/api/company' , companyRoutes)
 
+ app.use('/api/jobs',jobRoutes)
 // Sentry error handler: yeh sabke baad
 Sentry.setupExpressErrorHandler(app);
 console.log("✅ Sentry error handler set");
